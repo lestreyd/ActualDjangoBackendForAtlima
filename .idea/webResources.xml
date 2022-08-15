@@ -6,6 +6,7 @@
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/atlima_django/static" />
+            <path value="file://$PROJECT_DIR$/atlima_django/ipsc" />
           </resourceRoots>
         </entryData>
       </entry>

@@ -7,6 +7,15 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+from atlima_django.frontend.api.views import AvailableLanguagePackages, SpecificLanguageContent
+
+from atlima_django.location.api.views import (CountryManager, 
+                                              CountrySearch, 
+                                              RegionSearch,
+                                              CitySearch)
+
+from atlima_django.users.api.views import GetMyProfileInfo, Signin, CheckUserExists
+from atlima_django.system.api.views import GetLegal
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -37,6 +46,63 @@ urlpatterns += [
         name="api-docs",
     ),
 ]
+
+# Location Search API for Atlima
+urlpatterns += [
+    # Countries
+    path("country/<country_id>", 
+         CountryManager.as_view(), 
+         name="country-by-id"),
+    path("search-country",
+         CountrySearch.as_view(),
+         name="country-search"),
+    path("search-region",
+         RegionSearch.as_view(),
+         name='region-search'),
+    path("search-city",
+         CitySearch.as_view(),
+         name="search-city")
+]
+
+
+# Вход и получение профиля
+urlpatterns += [
+    path("get-profile",
+         GetMyProfileInfo.as_view(),
+         name='get-profile'),
+    path("signin",
+         Signin.as_view(),
+         name="signin"),
+    path("check-user-by-name",
+        CheckUserExists.as_view(),
+        name="check-user-exist")
+]
+
+
+# Frontend translations
+# фронтенд запрашивает языки и получает
+# в ответ JSON, заранее заполненный и помещённый на 
+# сервер
+urlpatterns += [
+    path("language-packages",
+        AvailableLanguagePackages.as_view(),
+        name = "language-packages"),
+    path("language-packages-content",
+        AvailableLanguagePackages.as_view(),
+        name = "language-packages"),
+    path("specific-language-package",
+         SpecificLanguageContent.as_view(),
+         name="specific-language-package"),   
+]
+
+
+# API для получения оферт и ПС
+urlpatterns += [
+    path("legal", GetLegal.as_view(), name="get-legal")
+]
+
+
+
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

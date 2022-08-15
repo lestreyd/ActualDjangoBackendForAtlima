@@ -1,7 +1,4 @@
 from django.contrib import admin
-from atlima_django.sport.sport import Sport
+from atlima_django.sport.models import Sport
 
 admin.site.register(Sport)
-
-
-# Register your models here.

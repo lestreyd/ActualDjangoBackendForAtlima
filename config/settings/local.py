@@ -1,6 +1,7 @@
 from .base import *  # noqa
 from .base import env
-
+from django.utils.translation import gettext_lazy as _
+import django_filters.rest_framework
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -33,7 +34,8 @@ EMAIL_PORT = 1025
 # WhiteNoise
 # ------------------------------------------------------------------------------
 # http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
-INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa F405
+INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS # noqa F405
+
 
 
 # django-debug-toolbar
@@ -76,3 +78,24 @@ CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
 # Your stuff...
 # ------------------------------------------------------------------------------
+PARLER_LANGUAGES = {
+    1: (
+        {'code': 'en', },
+        {'code': 'ru',},
+    ),
+    'default': {
+        'fallback': 'en',             # defaults to PARLER_DEFAULT_LANGUAGE_CODE
+        'hide_untranslated': False,   # the default; let .active_translations()       return fallbacks too.
+    }
+}
+
+
+LANGUAGES = (
+    ('en', _("English")),
+    ('ru', _("Russian")),
+)
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

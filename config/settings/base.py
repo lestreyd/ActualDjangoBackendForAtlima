@@ -2,10 +2,10 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
-
+from django.utils.translation import gettext_lazy as _
 import environ
 import pytz, time
-
+import os
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # atlima_django/
 APPS_DIR = ROOT_DIR / "atlima_django"
@@ -72,6 +72,7 @@ DJANGO_APPS = [
     "django.contrib.admin",
     "django.forms",
 ]
+
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
@@ -83,7 +84,8 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
-    "parler"
+    "parler",
+    "constance"
 ]
 
 LOCAL_APPS = [
@@ -92,7 +94,8 @@ LOCAL_APPS = [
     "atlima_django.sport",
     "atlima_django.qualification",
     "atlima_django.common",
-    "atlima_django.event",
+    "atlima_django.system",
+    "atlima_django.sport_events",
     "atlima_django.referee",
     "atlima_django.frontend",
     "atlima_django.ipsc",
@@ -103,7 +106,7 @@ LOCAL_APPS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-
+INSTALLED_APPS = ["django_json_widget"] + INSTALLED_APPS # noqa
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
@@ -348,11 +351,25 @@ SPECTACULAR_SETTINGS = {
 
 PARLER_LANGUAGES = {
     1: (
-        {'code': 'ar', },
-        {'code': 'en',},
+        {'code': 'en', },
+        {'code': 'ru',},
     ),
     'default': {
-        'fallback': 'ar',             # defaults to PARLER_DEFAULT_LANGUAGE_CODE
+        'fallback': 'en',             # defaults to PARLER_DEFAULT_LANGUAGE_CODE
         'hide_untranslated': False,   # the default; let .active_translations()       return fallbacks too.
     }
+}
+
+
+LANGUAGES = (
+    ('en', _("English")),
+    ('ru', _("Russian")),
+)
+
+
+CONSTANCE_CONFIG = {
+    'INITIAL_RATING': (1000, 'Initial sportsman rating'),
+    'RATING_INCREASE_COEFFICIENT': (0.1, 'Rating increase coefficient'),
+    'IPSC_DEFAULT_SQUADS_AMOUNT': (7, 'Initial squads amount in match'),
+    'IPSC_DEFAULT_SHOOTERS_AMOUNT' :(7, 'Initial shooters amount in squads'),
 }

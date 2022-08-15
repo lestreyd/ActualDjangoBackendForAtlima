@@ -20,7 +20,7 @@ class UserAdminCreationForm(admin_forms.UserCreationForm):
 
     class Meta(admin_forms.UserCreationForm.Meta):
         model = User
-
+        fields = '__all__'
         error_messages = {
             "username": {"unique": _("This username has already been taken.")}
         }
